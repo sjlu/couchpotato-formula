@@ -1,0 +1,3 @@
+CP_USER={{ salt['pillar.get']('couchpotato:user') }}  
+CP_HOME={{ salt['pillar.get']('couchpotato:home_dir') }}  
+CP_DATA={{ salt['pillar.get']('couchpotato:data_dir') }}  
