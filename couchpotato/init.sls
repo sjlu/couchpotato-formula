@@ -14,6 +14,7 @@ couchpotato-media-folder:
     - user: www-data
     - group: www-data
     - mode: 755
+    - makedirs: True
 
 couchpotato-init:
   file.managed:
@@ -32,10 +33,16 @@ couchpotato-default:
     - mode: 644
     - template: jinja
 
-couchpotato-config:
-  service:
+couchpotato-service:
+  service.running: 
+    - enable: True
     - name: couchpotato
-    - dead
+
+couchpotato-stop:
+  service.dead:
+    - name: couchpotato
+
+couchpotato-config:
   file.managed:
     - name: /var/www/.couchpotato/settings.conf
     - source: salt://couchpotato/files/settings.conf
@@ -46,8 +53,6 @@ couchpotato-config:
     - watch_in:
       - service: couchpotato
 
-couchpotato-service:
-  service.running: 
-    - enable: True
+couchpotato-start:
+  service.running:
     - name: couchpotato
-
