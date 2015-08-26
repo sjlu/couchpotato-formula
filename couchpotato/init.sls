@@ -34,13 +34,20 @@ couchpotato-default:
     - template: jinja
 
 couchpotato-service:
-  service.running: 
-    - enable: True
+  service.enabled:
     - name: couchpotato
 
+couchpotato-start:
+  cmd.run:
+    - name: /etc/init.d/couchpotato start
+    - onchanges:
+      - file: couchpotato-default
+
 couchpotato-stop:
-  service.dead:
-    - name: couchpotato
+  cmd.run:
+    - name: /etc/init.d/couchpotato stop
+    - prereq:
+      - file: couchpotato-config
 
 couchpotato-config:
   file.managed:
@@ -50,9 +57,10 @@ couchpotato-config:
     - user: www-data
     - group: www-data
     - template: jinja
-    - watch_in:
-      - service: couchpotato
 
-couchpotato-start:
-  service.running:
-    - name: couchpotato
+couchpotato-restart:
+  cmd.run:
+    - name: /etc/init.d/couchpotato restart
+    - onchanges:
+      - file: couchpotato-config
+
