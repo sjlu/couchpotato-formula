@@ -13,8 +13,13 @@ couchpotato-media-folder:
     - name: /var/www/media/movies
     - user: www-data
     - group: www-data
-    - mode: 755
+    - dir_mode: 755
+    - file_mode: 644
     - makedirs: True
+    - recurse:
+      - user
+      - group
+      - mode
 
 couchpotato-init:
   file.managed:
